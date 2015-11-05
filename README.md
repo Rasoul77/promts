@@ -59,6 +59,7 @@ There are following ROS packages included in this software:
 There are two demo codes,
 * **DemoPROMTSAstar.cpp;**
 * **DemoPROMTSDLS.cpp**
+
 that you can find in th following path
 
 `rasoul_promts_pkg/demo/`
@@ -78,10 +79,10 @@ correspondingly.
 The implementation assumes that there exists an object detection and pose estimation that estimated the poses of objects. The models
 of the objects are assumed to be convex polyhedrons. 
 
-Following steps show how to use PROMTS,
-1. Use the CGeometryPolyhedra class (rasoul_geometry_pkg) to compute a convex polyhedron for the objects.
-2. Fill in a Eigen::Transform<Real,3,Eigen::Affine> vector with the noisy poses.
-3. Fill in a std::vector<int> vector of objects' IDS.
-4. Choose between a search algorithm for PROMTS
-   - Use the refinePoses_AStarSearch function (rasoul_promts_pkg) to get an inter-penetration free set of poses using A* search algorithm.
-   - Use the refinePoses_DLSearch function (rasoul_promts_pkg) to get an inter-penetration free set of poses using DLSearch algorithm.
+Following steps show how to use PROMTS,  
+1. Use the CGeometryPolyhedra class (rasoul_geometry_pkg) to compute a convex polyhedron for the objects.  
+2. Fill in a Eigen::Transform<Real,3,Eigen::Affine> vector with the noisy poses.  
+3. Fill in a std::vector<int> vector of objects' IDS.  
+4. Choose between a search algorithm for PROMTS  
+   - Use the refinePoses_AStarSearch function (rasoul_promts_pkg) to get an inter-penetration free set of poses using A* search algorithm.  
+   - Use the refinePoses_DLSearch function (rasoul_promts_pkg) to get an inter-penetration free set of poses using DLSearch algorithm.  
