@@ -4,12 +4,12 @@ A Principle of Minimum Translation Search Approach for Object Pose Refinement
 This repository is the implementation of the methodology proposed in the following
 paper,
 
-@ARTICLE{Mojtahedzadeh:IROS:2015,
-  AUTHOR = {Mojtahedzadeh, Rasoul and Lilienthal, Achim J.},
-  TITLE = {A Principle of Minimum Translation Search Approach for Object Pose Refinement},
-  BOOKTITLE = {In Proc. of the IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)},
-  YEAR = {2015},
-  NOTE = {to appear},
+@ARTICLE{Mojtahedzadeh:IROS:2015,  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AUTHOR = {Mojtahedzadeh, Rasoul and Lilienthal, Achim J.},  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TITLE = {A Principle of Minimum Translation Search Approach for Object Pose Refinement},  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BOOKTITLE = {In Proc. of the IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)},  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;YEAR = {2015},  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;NOTE = {to appear},  
 }
 
 to autonomously resolve the inter-penetrations between adjacent objects models due to error in
@@ -29,7 +29,7 @@ on data sets generated in simulation and from real-world scenarios. The results 
 estimated poses and suggest that depth-limited search presents the best overall performance.
 
 # Implementation
-The software is implemented in C/C++ and under ROS (Robot Operation System) and tested with ROS Hydro revision.
+The software is implemented in C/C++ and under ROS (Robot Operation System) and tested with ROS Hydro.
 The software uses the fast implementation of 3D convex hull estimation algorithm in Bullet Physics engine 
 LinearMath.h header file. Thus, you have to install it on your linux distribution. For example, if your linux
 distribution is Ubuntu, you can install it using the following command line,
