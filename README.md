@@ -1,5 +1,5 @@
 # PROMTS (PRinciple Of Minimum Translation Search)
-## A Principle of Minimum Translation Search Approach for Object Pose Refinement
+### A Principle of Minimum Translation Search Approach for Object Pose Refinement
 
 This repository is the implementation of the methodology proposed in the following
 paper,
@@ -15,7 +15,7 @@ paper,
 to autonomously resolve the inter-penetrations between adjacent objects models due to error in
 the estimated poses of the objects.
 
-# Paper Abstract:
+## Paper Abstract:
 The state-of-the-art object pose estimation approaches represent the set of detected poses together
 with corresponding uncertainty. The inaccurate noisy poses may result in a configuration of overlapping
 objects especially in cluttered environments. Under a rigid body assumption the inter-penetrations between
