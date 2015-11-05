@@ -34,25 +34,25 @@ The software uses the fast implementation of 3D convex hull estimation algorithm
 LinearMath.h header file. Thus, you have to install it on your linux distribution. For example, if your linux
 distribution is Ubuntu, you can install it using the following command line,
 
-sudo apt-get install libbullet libbullet-dev 
+`sudo apt-get install libbullet libbullet-dev`
 
 The software also requires Eigen library,
 
-sudo apt-get install libeigen3-dev
+`sudo apt-get install libeigen3-dev`
 
 # ROS packages
 There are following ROS packages included in this software:
-* rasoul_promts_pkg 
+* **rasoul\_promts\_pkg**
   This is the main package of the software. It includes sample codes for demonstration of how to use the software.
-* rasoul_geometry_pkg 
+* **rasoul\_geometry\_pkg**
   This package implements necessary computational geometry functions for being used with the main package.
-* rasoul_collision_detection_pkg
+* **rasoul\_collision\_detection\_pkg**
   This package implements Separating Axis Theorem (SAT) in 3-dimentional space in order to compute Depth of
   Penetration (DOP) and Minimum Translation Vector (MTV) between two convex polyhedra.
-* rasoul_visualizer_pkg
+* **rasoul\_visualizer\_pkg**
   This package implements a visualizer using OpenGL in order to visualize a configuration of objects and animate
   the found resolving solution.
-* rasoul_common_pkg
+* **rasoul\_common\_pkg**
   This package implements a set of fucntions and classes being used by other packages.
 
 # Run demo
