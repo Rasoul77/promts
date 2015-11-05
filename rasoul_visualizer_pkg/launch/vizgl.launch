@@ -1,0 +1,5 @@
+<launch>
+  <node pkg="rasoul_visualizer_pkg" name="Visualizer" type="Visualizer"
+        args="--texturefile $(find rasoul_visualizer_pkg)/images/textureFile.txt --charsetfile $(find rasoul_visualizer_pkg)/data/charset" />
+
+</launch>
