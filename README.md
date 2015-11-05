@@ -1,19 +1,9 @@
 # PROMTS (PRinciple Of Minimum Translation Search)
 ### A Principle of Minimum Translation Search Approach for Object Pose Refinement
 
-This repository is the implementation of the methodology proposed in the following
-paper,
-
-> @ARTICLE{Mojtahedzadeh:IROS:2015,  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AUTHOR = {Mojtahedzadeh, Rasoul and Lilienthal, Achim J.},  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TITLE = {A Principle of Minimum Translation Search Approach for Object Pose Refinement},  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BOOKTITLE = {In Proc. of the IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)},  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;YEAR = {2015},  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;NOTE = {to appear},  
-}
-
-to autonomously resolve the inter-penetrations between adjacent objects models due to error in
-the estimated poses of the objects.
+This repository is the implementation of the [methodology we propose](http://aass.oru.se/Research/Learning/publications/Mojtahedzadeh_etal_2015-IROS-A_Principle_of_Minimum_Translation_Search_Approach_for_Object_Pose_Refinement.html)
+to autonomously resolve the inter-penetrations between adjacent objects models due to error in the
+estimated poses of the objects.
 
 ## Paper Abstract:
 The state-of-the-art object pose estimation approaches represent the set of detected poses together
