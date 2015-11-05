@@ -1,0 +1,7 @@
+<launch>
+  <node pkg="rasoul_visualizer_pkg" name="Visualizer" type="Visualizer"
+        args="--texturefile $(find rasoul_visualizer_pkg)/images/textureFile.txt --charsetfile $(find rasoul_visualizer_pkg)/data/charset" />
+
+  <node pkg="rasoul_promts_pkg" name="DemoPROMTSAstar" type="DemoPROMTSAstar"
+        args="--readfile $(find rasoul_promts_pkg)/examples/example1_noisy.cfg" />
+</launch>
