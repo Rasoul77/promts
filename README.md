@@ -1,5 +1,5 @@
 # PROMTS (PRinciple Of Minimum Translation Search)
-A Principle of Minimum Translation Search Approach for Object Pose Refinement
+## A Principle of Minimum Translation Search Approach for Object Pose Refinement
 
 This repository is the implementation of the methodology proposed in the following
 paper,
@@ -28,7 +28,7 @@ two selected search methods: A-star and Depth-Limited search. The performance of
 on data sets generated in simulation and from real-world scenarios. The results show overall improvement of the 
 estimated poses and suggest that depth-limited search presents the best overall performance.
 
-# Implementation
+## Implementation
 The software is implemented in C/C++ and under ROS (Robot Operation System) and tested with ROS Hydro.
 The software uses the fast implementation of 3D convex hull estimation algorithm in Bullet Physics engine 
 LinearMath.h header file. Thus, you have to install it on your linux distribution. For example, if your linux
@@ -40,7 +40,7 @@ The software also requires Eigen library,
 
 `sudo apt-get install libeigen3-dev`
 
-# ROS packages
+## ROS packages
 There are following ROS packages included in this software:
 * **rasoul\_promts\_pkg**
   This is the main package of the software. It includes sample codes for demonstration of how to use the software.
@@ -55,26 +55,26 @@ There are following ROS packages included in this software:
 * **rasoul\_common\_pkg**
   This package implements a set of fucntions and classes being used by other packages.
 
-# Run demo
+## Run demo
 There are two demo codes,
-* DemoPROMTSAstar.cpp; 
-* DemoPROMTSDLS.cpp
+* **DemoPROMTSAstar.cpp;**
+* **DemoPROMTSDLS.cpp**
 that you can find in th following path
 
-rasoul_promts_pkg/demo/
+`rasoul_promts_pkg/demo/`
 
 and both demo source codes are fed with a sample noisy configuration of objects data which can be found in the following path
 
-rasoul_promts_pkg/examples/example1_noisy.cfg
+`rasoul_promts_pkg/examples/example1_noisy.cfg`
 
 There are two launch files example1_Astar.launch and example1_DLS.launch in the following path
 
-rasoul_promts_pkg/launch/
+`rasoul_promts_pkg/launch/`
 
 Runing the launch files, they will bring up the visualizer and execute the demo PROMTS algorithms using A* or Depth-Limited Search
 correspondingly.
 
-# Use PROMTS
+## Use PROMTS
 The implementation assumes that there exists an object detection and pose estimation that estimated the poses of objects. The models
 of the objects are assumed to be convex polyhedrons. 
 
