@@ -4,7 +4,7 @@
 This repository is the implementation of the methodology proposed in the following
 paper,
 
-@ARTICLE{Mojtahedzadeh:IROS:2015,  
+> @ARTICLE{Mojtahedzadeh:IROS:2015,  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AUTHOR = {Mojtahedzadeh, Rasoul and Lilienthal, Achim J.},  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TITLE = {A Principle of Minimum Translation Search Approach for Object Pose Refinement},  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BOOKTITLE = {In Proc. of the IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)},  
