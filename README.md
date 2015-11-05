@@ -68,7 +68,7 @@ and both demo source codes are fed with a sample noisy configuration of objects 
 
 `rasoul_promts_pkg/examples/example1_noisy.cfg`
 
-There are two launch files example1_Astar.launch and example1_DLS.launch in the following path
+There are two launch files **example1\_Astar.launch** and **example1\_DLS.launch** in the following path
 
 `rasoul_promts_pkg/launch/`
 
