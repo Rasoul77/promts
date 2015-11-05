@@ -2,7 +2,7 @@
 ### A Principle of Minimum Translation Search Approach for Object Pose Refinement
 
 This repository is the implementation of the [methodology we propose](http://aass.oru.se/Research/Learning/publications/Mojtahedzadeh_etal_2015-IROS-A_Principle_of_Minimum_Translation_Search_Approach_for_Object_Pose_Refinement.html)
-to autonomously resolve the inter-penetrations between adjacent objects models due to error in the
+to autonomously resolve the inter-penetrations between adjacent objects models due to errors in the
 estimated poses of the objects.
 
 ## Paper Abstract:
@@ -76,3 +76,12 @@ Following steps show how to use PROMTS,
 4. Choose between a search algorithm for PROMTS  
    - Use the `refinePoses_AStarSearch()` function (`rasoul_promts_pkg`) to get an inter-penetration free set of poses using A* search algorithm.  
    - Use the `refinePoses_DLSearch()` function (`rasoul_promts_pkg`) to get an inter-penetration free set of poses using DLSearch algorithm.  
+
+## Paper and Citation
+Please visit the following page to download the paper and the bibtex for citation,
+
+[A Principle of Minimum Translation Search Approach for Object Pose Refinement](http://aass.oru.se/Research/Learning/publications/Mojtahedzadeh_etal_2015-IROS-A_Principle_of_Minimum_Translation_Search_Approach_for_Object_Pose_Refinement.html)
+
+
+
+
