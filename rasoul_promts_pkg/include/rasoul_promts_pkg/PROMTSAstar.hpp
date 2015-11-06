@@ -111,7 +111,7 @@ namespace rasoul
     }
 
     // get distance of "this" node to idx-th child node
-    float getDistToChild( unsigned int idx )
+    inline float getDistToChild( unsigned int idx )
     {
       if(idx<m_costFromThisToChild.size())
       {
@@ -121,20 +121,20 @@ namespace rasoul
     }
 
     // get heuristic cost to reach a goal state from "this" node
-    float getHeuristicCostToGoal( AstarNode* goalNodePtr )
+    inline float getHeuristicCostToGoal( AstarNode* goalNodePtr )
     {
       return(m_estimatedCostToGoal);
     }
 
     // is "this" node a goal state?
-    bool isGoal( AstarNode* goalNodePtr )
+    inline bool isGoal( AstarNode* goalNodePtr )
     {
       if(m_isNodeAGoal) return(true);
       return(false);
     }
 
     // compute children and other neccessary computations
-    void compute()
+    inline void compute()
     {
       std::vector< geometry::AABBox<Real> > aabb(m_shapesPtr->size());
       m_estimatedCostToGoal = 0.0f;
@@ -203,7 +203,7 @@ namespace rasoul
     }
 
     // return the solution
-    void getSolution(std::vector<AstarNode*>& solution)
+    inline void getSolution(std::vector<AstarNode*>& solution)
     {
       solution.clear();
       AstarNode* node = this;
@@ -216,7 +216,7 @@ namespace rasoul
     }
 
     // checks if the set of newPoses has been already visited
-    bool isVisited(PoseVector& newPoses)
+    inline bool isVisited(PoseVector& newPoses)
     {
       AstarNode* theparent = m_parentPtr;
       while(theparent)
@@ -236,7 +236,7 @@ namespace rasoul
     }
 
     // print some info about the node
-    void printNodeInfo(COpenGLRosCom* glNodePtr)
+    inline void printNodeInfo(COpenGLRosCom* glNodePtr)
     {
       if(glNodePtr == NULL) return;
       Matrix<float,3,1> color(0.1f, 0.5f, 0.4f);
@@ -269,7 +269,7 @@ namespace rasoul
   };
 
   template<typename CNodeT>
-  CSolution<CNodeT> A_Star_Search(CNodeT* startNodePtr, CNodeT* goalNodePtr, ProblemDataStruct& pds)
+  inline CSolution<CNodeT> A_Star_Search(CNodeT* startNodePtr, CNodeT* goalNodePtr, ProblemDataStruct& pds)
   {
     std::vector<CNodeT*> closedSet; // The set of nodes already evaluated.
     std::vector<CNodeT*> openSet;   // The set of tentative nodes to be evaluated,
@@ -353,7 +353,7 @@ namespace rasoul
     return F;
   }
 
-  bool
+  inline bool
   refinePoses_AStarSearch
   (
     ShapeVector& shapes, // input: Shapes
