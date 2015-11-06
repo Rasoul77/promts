@@ -46,6 +46,10 @@
   <build_depend>rasoul_visualizer_pkg</build_depend>
   <build_depend>rasoul_collision_detection_pkg</build_depend>
   <build_depend>rasoul_geometry_pkg</build_depend>
+  <run_depend>rasoul_common_pkg</run_depend>
+  <run_depend>rasoul_visualizer_pkg</run_depend>
+  <run_depend>rasoul_collision_detection_pkg</run_depend>
+  <run_depend>rasoul_geometry_pkg</run_depend>
 
   <!-- The export tag contains other, unspecified, tags -->
   <export>
