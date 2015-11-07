@@ -98,13 +98,13 @@ namespace rasoul
         delete child[i];
     }
 
-    bool isGoal()
+    inline bool isGoal()
     {
       if(isAtGoal) return(true);
       return(false);
     }
 
-    void Compute()
+    inline void Compute()
     {
       std::vector< geometry::AABBox<Real> > aabb(shapesPtr->size());
       Real total_inter_penetration = 0.0f;
@@ -174,7 +174,7 @@ namespace rasoul
       else if(total_inter_penetration/child.size() < 0.005) isAtGoal = true;
     }
 
-    void getSolution(std::vector<DLSearchNode*>& solution)
+    inline void getSolution(std::vector<DLSearchNode*>& solution)
     {
       solution.clear();
       DLSearchNode* node = this;
@@ -186,7 +186,7 @@ namespace rasoul
       }
     }
 
-    bool isVisited(PoseVector& newPoses)
+    inline bool isVisited(PoseVector& newPoses)
     {
       DLSearchNode* theparent = parent;
       while(theparent)
@@ -205,12 +205,12 @@ namespace rasoul
       return(false);
     }
 
-    Real GetTotalDOP()
+    inline Real GetTotalDOP()
     {
       return total_cost_to_reach_this_node;
     }
 
-    void PrintNodeInfo(COpenGLRosCom* glNodePtr)
+    inline void PrintNodeInfo(COpenGLRosCom* glNodePtr)
     {
       Matrix<Real,3,1> color(0.1f, 0.5f, 0.4f);
       for(unsigned int i=0; i<shapesPtr->size(); i++)
@@ -238,7 +238,7 @@ namespace rasoul
       bool  isAtGoal;
   };
 
-  CSolution<DLSearchNode> RecursiveDLS(DLSearchNode* nodePtr, int limit, ProblemDataStruct& pds)
+  inline CSolution<DLSearchNode> RecursiveDLS(DLSearchNode* nodePtr, int limit, ProblemDataStruct& pds)
   {
     pds.m_iterations++;
 
@@ -270,12 +270,12 @@ namespace rasoul
     }
   }
 
-  CSolution<DLSearchNode> DepthLimitedSearch(DLSearchNode* initNodePtr, int limit, ProblemDataStruct& pds)
+  inline CSolution<DLSearchNode> DepthLimitedSearch(DLSearchNode* initNodePtr, int limit, ProblemDataStruct& pds)
   {
     return RecursiveDLS(initNodePtr, limit, pds);
   }
 
-  bool
+  inline bool
   refinePoses_DLSearch
   (
     ShapeVector& shapes, // input: Shapes

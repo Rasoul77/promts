@@ -111,7 +111,7 @@ link_directories(${BULLET_LIBRARY_DIRS})
 catkin_package(
   INCLUDE_DIRS include
 #  LIBRARIES rasoul_promts_pkg
-#  CATKIN_DEPENDS roscpp
+  CATKIN_DEPENDS rasoul_common_pkg rasoul_visualizer_pkg rasoul_collision_detection_pkg rasoul_geometry_pkg
 #  DEPENDS system_lib
 )
 
