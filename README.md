@@ -70,7 +70,7 @@ The implementation assumes that there exists an object detection and pose estima
 of the objects are assumed to be convex polyhedrons.
 
 Following steps show how to use PROMTS,  
-1. Use the `CGeometryPolyhedra{}` class (`rasoul_geometry_pkg`) to compute a convex polyhedron for the objects.  
+1. Use the `CGeometryPolyhedra{}` class (`rasoul_geometry_pkg`) to compute convex polyhedra models for the objects.  
 2. Fill in a `Eigen::Transform<Real,3,Eigen::Affine>` vector with the noisy poses.  
 3. Fill in a `std::vector<int>` vector of objects' IDS.  
 4. Choose between a search algorithm for PROMTS  
