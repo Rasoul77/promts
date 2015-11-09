@@ -32,17 +32,17 @@ The software also requires Eigen library,
 
 ### ROS packages
 There are following ROS packages included in this software:
-* **rasoul\_promts\_pkg**
+* **rasoul\_promts\_pkg**  
   This is the main package of the software. It includes sample codes for demonstration of how to use the software.
-* **rasoul\_geometry\_pkg**
+* **rasoul\_geometry\_pkg**  
   This package implements necessary computational geometry functions for being used with the main package.
-* **rasoul\_collision\_detection\_pkg**
+* **rasoul\_collision\_detection\_pkg**  
   This package implements Separating Axis Theorem (SAT) in 3-dimentional space in order to compute Depth of
   Penetration (DOP) and Minimum Translation Vector (MTV) between two convex polyhedra.
-* **rasoul\_visualizer\_pkg**
+* **rasoul\_visualizer\_pkg**  
   This package implements a visualizer using OpenGL in order to visualize a configuration of objects and animate
   the found resolving solution.
-* **rasoul\_common\_pkg**
+* **rasoul\_common\_pkg**  
   This package implements a set of fucntions and classes being used by other packages.
 
 ### Runing demos
