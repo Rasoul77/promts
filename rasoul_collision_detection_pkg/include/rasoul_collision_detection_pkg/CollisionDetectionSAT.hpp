@@ -111,9 +111,9 @@ namespace rasoul{
         if(a<b) {ov = a; tv = axis;} else {ov = b; tv =-axis;}
       }
       else{
-        std::cout << "<" << minim1 << ", " << maxim1 << "> , <" << minim2 << ", " << maxim2 << ">" << std::endl;
+        std::cout << "case 1: <" << minim1 << ", " << maxim1 << "> , <" << minim2 << ", " << maxim2 << ">" << std::endl;
       }
-      if(ov<0) std::cout << "<" << minim1 << ", " << maxim1 << "> , <" << minim2 << ", " << maxim2 << ">" << std::endl;
+      if(ov<0) std::cout << "case 2: <" << minim1 << ", " << maxim1 << "> , <" << minim2 << ", " << maxim2 << ">" << std::endl;
       return(true);
     }
 
@@ -137,7 +137,9 @@ namespace rasoul{
 
       for(size_t i=0; i<ph1.uF.size(); i++)
       {
+
         Matrix<T,3,1> axis = ph1.F[ ph1.uF[i] ].endp - ph1.F[ ph1.uF[i] ].cm;
+        if(axis.squaredNorm()<1e-6) continue;
         if(ComputeOverlappingValue(ph1, ph2, axis, tv, ov))
         {
           if(ov<dop)
@@ -154,6 +156,7 @@ namespace rasoul{
       for(size_t i=0; i<ph2.uF.size(); i++)
       {
         Matrix<T,3,1> axis = ph2.F[ ph2.uF[i] ].endp - ph2.F[ ph2.uF[i] ].cm;
+        if(axis.squaredNorm()<1e-6) continue;
         if(ComputeOverlappingValue(ph1, ph2, axis, tv, ov))
         {
           if(ov<dop)
@@ -174,6 +177,7 @@ namespace rasoul{
           Matrix<T,3,1> u1 = ph1.E[ ph1.uE[i] ].endp - ph1.V[ ph1.E[ ph1.uE[i] ].i ];
           Matrix<T,3,1> u2 = ph2.E[ ph2.uE[j] ].endp - ph2.V[ ph2.E[ ph2.uE[j] ].i ];
           Matrix<T,3,1> axis = u1.cross(u2);
+          if(axis.squaredNorm()<1e-6) continue;
           axis.normalize();
           if(ComputeOverlappingValue(ph1, ph2, axis, tv, ov))
           {
@@ -216,6 +220,7 @@ namespace rasoul{
       for(size_t i=0; i<ph1.uF.size(); i++)
       {
         Matrix<T,3,1> axis = ph1.F[ ph1.uF[i] ].endp - ph1.F[ ph1.uF[i] ].cm;
+        if(axis.squaredNorm()<1e-6) continue;
         if(ComputeOverlappingValue(ph1, ph2, axis, tv, ov))
         {
           dops.push_back(ov);
@@ -231,6 +236,7 @@ namespace rasoul{
       for(size_t i=0; i<ph2.uF.size(); i++)
       {
         Matrix<T,3,1> axis = ph2.F[ ph2.uF[i] ].endp - ph2.F[ ph2.uF[i] ].cm;
+        if(axis.squaredNorm()<1e-6) continue;
         if(ComputeOverlappingValue(ph1, ph2, axis, tv, ov))
         {
           dops.push_back(ov);
@@ -250,6 +256,7 @@ namespace rasoul{
           Matrix<T,3,1> u1 = ph1.E[ ph1.uE[i] ].endp - ph1.V[ ph1.E[ ph1.uE[i] ].i ];
           Matrix<T,3,1> u2 = ph2.E[ ph2.uE[j] ].endp - ph2.V[ ph2.E[ ph2.uE[j] ].i ];
           Matrix<T,3,1> axis = u1.cross(u2);
+          if(axis.squaredNorm()<1e-6) continue;
           axis.normalize();
           if(ComputeOverlappingValue(ph1, ph2, axis, tv, ov))
           {
@@ -269,4 +276,3 @@ namespace rasoul{
   }; // namespace geometry
 }; // namespace rasoul
 #endif
-
