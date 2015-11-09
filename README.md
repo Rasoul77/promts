@@ -1,11 +1,11 @@
-# PROMTS (PRinciple Of Minimum Translation Search)
+## PROMTS (PRinciple Of Minimum Translation Search)
 ### A Principle of Minimum Translation Search Approach for Object Pose Refinement
 
 This repository is the implementation of the [methodology we propose](http://aass.oru.se/Research/Learning/publications/Mojtahedzadeh_etal_2015-IROS-A_Principle_of_Minimum_Translation_Search_Approach_for_Object_Pose_Refinement.html)
 to autonomously resolve the inter-penetrations between adjacent objects models due to errors in the
 estimated poses of the objects.
 
-## Paper Abstract:
+### Paper Abstract:
 The state-of-the-art object pose estimation approaches represent the set of detected poses together
 with corresponding uncertainty. The inaccurate noisy poses may result in a configuration of overlapping
 objects especially in cluttered environments. Under a rigid body assumption the inter-penetrations between
@@ -30,7 +30,7 @@ The software also requires Eigen library,
 
 `sudo apt-get install libeigen3-dev`
 
-## ROS packages
+### ROS packages
 There are following ROS packages included in this software:
 * **rasoul\_promts\_pkg**
   This is the main package of the software. It includes sample codes for demonstration of how to use the software.
@@ -45,12 +45,12 @@ There are following ROS packages included in this software:
 * **rasoul\_common\_pkg**
   This package implements a set of fucntions and classes being used by other packages.
 
-## Run demo
+### Runing demos
 There are two demo codes,
 * **DemoPROMTSAstar.cpp;**
 * **DemoPROMTSDLS.cpp**
 
-that you can find in th following path
+that you can find in the following path
 
 `rasoul_promts_pkg/demo/`
 
@@ -65,9 +65,9 @@ There are two launch files **example1\_Astar.launch** and **example1\_DLS.launch
 Runing the launch files, they will bring up the visualizer and execute the demo PROMTS algorithms using A* or Depth-Limited Search
 correspondingly.
 
-## Use PROMTS
-The implementation assumes that there exists an object detection and pose estimation that estimated the poses of objects. The models
-of the objects are assumed to be convex polyhedrons. 
+### PROMTS Usage
+The implementation assumes that there exists an object detection and pose estimation module that estimates the poses of objects. And the models
+of the objects are assumed to be convex polyhedrons.
 
 Following steps show how to use PROMTS,  
 1. Use the `CGeometryPolyhedra{}` class (`rasoul_geometry_pkg`) to compute a convex polyhedron for the objects.  
@@ -77,7 +77,7 @@ Following steps show how to use PROMTS,
    - Use the `refinePoses_AStarSearch()` function (`rasoul_promts_pkg`) to get an inter-penetration free set of poses using A* search algorithm.  
    - Use the `refinePoses_DLSearch()` function (`rasoul_promts_pkg`) to get an inter-penetration free set of poses using DLSearch algorithm.  
 
-## Paper and Citation
+### Paper and Citation
 Please visit the following page to download the paper and the bibtex for citation,
 
 [A Principle of Minimum Translation Search Approach for Object Pose Refinement](http://aass.oru.se/Research/Learning/publications/Mojtahedzadeh_etal_2015-IROS-A_Principle_of_Minimum_Translation_Search_Approach_for_Object_Pose_Refinement.html)
