@@ -70,48 +70,45 @@ namespace rasoul
   class AstarNode
   {
   public:
+    AstarNode* m_parentNodePtr;                // Parent node pointer
+    std::vector<AstarNode*> m_childsNodePtrs;  // Children node pointers
 
-    // parent pointer and children pointers
-    AstarNode* m_parentPtr;
-    std::vector<AstarNode*> m_childPtr;
+    PoseVector m_poses; // Node's poses
 
-    // node state
-    PoseVector m_poses;
+    Real m_costToReachThisNodeFromParent; // Cost to reach this node from parent node
 
-    // cost to reach "this" node from parent node
-    float m_costToReachThisNodeFromParent;
-
-    // helper pointers to shapes and id's of the objects for computation
+    // Helper pointers to shapes and id's of the objects for computation
     ShapeVector* m_shapesPtr;
-    IDVector* m_IDPtr;
+    IDVector*    m_IDPtr;
 
-    // constructors
+    // Constructors
     AstarNode() { m_isNodeAGoal = false; m_costToReachThisNodeFromParent = 0; }
-    AstarNode(
-      PoseVector& poses,
-      float costToReachThisNodeFromParent,
-      AstarNode* parentPtr,
+    AstarNode
+    (
+      PoseVector&  poses,
+      Real         costToReachThisNodeFromParent,
+      AstarNode*   parentPtr,
       ShapeVector* shapesPtr,
-      IDVector* IDPtr
+      IDVector*    IDPtr
     )
     {
       m_isNodeAGoal = false;
-      m_poses = poses;
+      m_poses       = poses;
       m_costToReachThisNodeFromParent = costToReachThisNodeFromParent;
-      m_parentPtr = parentPtr;
-      m_shapesPtr = shapesPtr;
-      m_IDPtr = IDPtr;
+      m_parentNodePtr = parentPtr;
+      m_shapesPtr     = shapesPtr;
+      m_IDPtr         = IDPtr;
     }
 
-    // deconstructor
+    // Deconstructor
     ~AstarNode()
     {
-      for(size_t i=0; i<m_childPtr.size(); i++)
-        delete m_childPtr[i];
+      for(size_t i=0; i<m_childsNodePtrs.size(); i++)
+        delete m_childsNodePtrs[i];
     }
 
-    // get distance of "this" node to idx-th child node
-    inline float getDistToChild( unsigned int idx )
+    // Get distance of "this" node to idx-th child node
+    Real getDistToChild( unsigned int idx )
     {
       if(idx<m_costFromThisToChild.size())
       {
@@ -120,45 +117,61 @@ namespace rasoul
       return(0);
     }
 
-    // get heuristic cost to reach a goal state from "this" node
-    inline float getHeuristicCostToGoal( AstarNode* goalNodePtr )
+    // Get heuristic cost to reach a goal state from "this" node
+    Real getHeuristicCostToGoal( AstarNode* goalNodePtr )
     {
       return(m_estimatedCostToGoal);
     }
 
-    // is "this" node a goal state?
-    inline bool isGoal( AstarNode* goalNodePtr )
+    // Is "this" node the same as theNodePtr
+    bool isSameNode( AstarNode* theNodePtr )
+    {
+      float sum = 0;
+      size_t N = this->m_poses.size();
+      for(size_t i=0; i<N; i++)
+      {
+        float dx = theNodePtr->m_poses[i].data()[TX]-this->m_poses[i].data()[TX];
+        float dy = theNodePtr->m_poses[i].data()[TY]-this->m_poses[i].data()[TY];
+        float dz = theNodePtr->m_poses[i].data()[TZ]-this->m_poses[i].data()[TZ];
+        sum += dx*dx+dy*dy+dz*dz;
+      }
+      if(sum < 1e-4) return(true);
+      return(false);
+    }
+
+    // Is "this" node a goal state?
+    bool isGoal( AstarNode* goalNodePtr )
     {
       if(m_isNodeAGoal) return(true);
       return(false);
     }
 
-    // compute children and other neccessary computations
-    inline void compute()
+    // Generate children nodes and compute the heuristic score
+    void compute()
     {
       std::vector< geometry::AABBox<Real> > aabb(m_shapesPtr->size());
       m_estimatedCostToGoal = 0.0f;
-      // revert all the shapes to their original poses
+      // Revert all the shapes to their original poses
       for(size_t i=0; i<m_shapesPtr->size(); i++)
       {
         m_shapesPtr->at(i).RevertPose();
         m_shapesPtr->at(i).TransformShape(m_poses[i]);
       }
-      // compute AABBs
+      // Compute AABBs
       for(size_t i=0; i<m_shapesPtr->size(); i++)
       {
         geometry::bbComputePointsAABB(m_shapesPtr->at(i).V, aabb[i]);
         geometry::bbExtendAABB(aabb[i], (Real) 0.01);
       }
-      // compute DOPs
+      // Compute DOPs
       PoseVector newPoses;
       for(size_t i=0; i<m_shapesPtr->size(); i++)
       {
         for(size_t j=i+1; j<m_shapesPtr->size(); j++)
         {
-          // if two objects are fixed, skip!
+          // If two objects are fixed, skip!
           if(m_IDPtr->at(i) <= 0 && m_IDPtr->at(j) <= 0) continue;
-          // if two objects AABBs collide, compute their possible DOP
+          // If two objects AABBs collide, compute their possible DOP
           if(geometry::bbCheckTwoAABBCollision(aabb[i], aabb[j]))
           {
             Matrix<Real,3,1> dop_v;
@@ -180,7 +193,7 @@ namespace rasoul
                 if(not isVisited(newPoses))
                 {
                   AstarNode* newNodePtr = new AstarNode(newPoses, dop, this, m_shapesPtr, m_IDPtr);
-                  m_childPtr.push_back(newNodePtr);
+                  m_childsNodePtrs.push_back(newNodePtr);
                 }
               }
               if(m_IDPtr->at(j) > 0)
@@ -192,33 +205,33 @@ namespace rasoul
                 if(not isVisited(newPoses))
                 {
                   AstarNode* newNodePtr = new AstarNode(newPoses, dop, this, m_shapesPtr, m_IDPtr);
-                  m_childPtr.push_back(newNodePtr);
+                  m_childsNodePtrs.push_back(newNodePtr);
                 }
               }
             }
           }
         }
       }
-      if(m_estimatedCostToGoal/m_childPtr.size() < 0.005) m_isNodeAGoal = true;
+      if(m_estimatedCostToGoal < 1e-4) m_isNodeAGoal = true;
     }
 
-    // return the solution
-    inline void getSolution(std::vector<AstarNode*>& solution)
+    // Return the solution
+    void getSolution(std::vector<AstarNode*>& solution)
     {
       solution.clear();
       AstarNode* node = this;
       solution.push_back(node);
-      while(node->m_parentPtr!=NULL)
+      while(node->m_parentNodePtr!=NULL)
       {
-        node = node->m_parentPtr;
+        node = node->m_parentNodePtr;
         solution.push_back(node);
       }
     }
 
-    // checks if the set of newPoses has been already visited
-    inline bool isVisited(PoseVector& newPoses)
+    // Check whether new set of poses is already visited
+    bool isVisited(PoseVector& newPoses)
     {
-      AstarNode* theparent = m_parentPtr;
+      AstarNode* theparent = m_parentNodePtr;
       while(theparent)
       {
         float sum = 0;
@@ -229,14 +242,14 @@ namespace rasoul
           float dz = newPoses[i].data()[TZ]-theparent->m_poses[i].data()[TZ];
           sum += dx*dx+dy*dy+dz*dz;
         }
-        if(sum < 0.001) return(true);
-        theparent = theparent->m_parentPtr;
+        if(sum < 1e-4) return(true);
+        theparent = theparent->m_parentNodePtr;
       }
       return(false);
     }
 
-    // print some info about the node
-    inline void printNodeInfo(COpenGLRosCom* glNodePtr)
+    // Print some info about the node
+    void printNodeInfo(COpenGLRosCom* glNodePtr)
     {
       if(glNodePtr == NULL) return;
       Matrix<float,3,1> color(0.1f, 0.5f, 0.4f);
@@ -261,29 +274,30 @@ namespace rasoul
       ros::spinOnce();
     }
 
-
   private:
     std::vector<float> m_costFromThisToChild;
     bool  m_isNodeAGoal;
     float m_estimatedCostToGoal;
   };
 
-  template<typename CNodeT>
-  inline CSolution<CNodeT> A_Star_Search(CNodeT* startNodePtr, CNodeT* goalNodePtr, ProblemDataStruct& pds)
+  template<typename CNodeT, typename RealT>
+  CSolution<CNodeT> A_Star_Search(CNodeT* startNodePtr, CNodeT* goalNodePtr, ProblemDataStruct& pds)
   {
-    std::vector<CNodeT*> closedSet; // The set of nodes already evaluated.
-    std::vector<CNodeT*> openSet;   // The set of tentative nodes to be evaluated,
-    openSet.push_back(startNodePtr);    // initially containing the start node
-    std::map<CNodeT*, float> g_score; // Cost from start along best known path.
-    g_score[startNodePtr] = 0; // initial node cost is zero
-    std::map<CNodeT*, float> f_score; // Estimated total cost from start to goal through path y.
+    std::vector<CNodeT*> closedSet;     // The set of nodes already evaluated.
+    std::vector<CNodeT*> openSet;       // The set of tentative nodes to be evaluated,
+    openSet.push_back(startNodePtr);    // Initially containing the start node
+    std::map<CNodeT*, RealT> g_score;   // Cost from start along best known path.
+    g_score[startNodePtr] = 0;          // Initial node g_score is zero
+    std::map<CNodeT*, RealT> f_score;   // Estimated total cost from start to goal through path y.
 
-    startNodePtr->compute();
-    f_score[startNodePtr] = g_score[startNodePtr] + startNodePtr->getHeuristicCostToGoal(goalNodePtr);
+    startNodePtr->compute();            // Compute the heuristic cost to goal of start node, and generate successors
+
+    f_score[startNodePtr] = g_score[startNodePtr] +
+                            startNodePtr->getHeuristicCostToGoal(goalNodePtr);
 
     while(not openSet.empty())
     {
-      // give up if the number of expanded nodes are greater than some threshold
+      // Give up if the number of expanded nodes are greater than some threshold
       if(openSet.size()+closedSet.size() > (unsigned) pds.m_maxNodes)
       {
         pds.m_iterations = openSet.size()+closedSet.size();
@@ -291,64 +305,68 @@ namespace rasoul
         return S;
       }
 
-      // current := the node in openset having the lowest f_score[] value
+      // Find the node in openSet having the lowest f_score[] value, label it as currentNodePtr
       size_t current_idx = 0;
-      CNodeT* current = openSet[current_idx];
-      Real lowest_f_score = f_score[openSet[current_idx]];
+      CNodeT* currentNodePtr = openSet[current_idx];
+      RealT lowest_f_score = f_score[openSet[current_idx]];
       for(size_t i=1; i<openSet.size(); i++)
         if(f_score[openSet[i]] < lowest_f_score)
         {
           lowest_f_score = f_score[openSet[i]];
-          current = openSet[i];
+          currentNodePtr = openSet[i];
           current_idx = i;
         }
 
-      // if current = goal, then return reconstruct_path(came_from, goal)
-      if(current->isGoal(goalNodePtr))
+      // If currentNodePtr is a goal, then return solution
+      if(currentNodePtr->isGoal(goalNodePtr))
       {
         pds.m_iterations = openSet.size()+closedSet.size();
         CSolution<CNodeT> S(CSolution<CNodeT>::SUCCESS);
-        current->getSolution(S.m_solution);
+        currentNodePtr->getSolution(S.m_solution);
         return S;
       }
 
-      // remove current from openset
+      // Remove currentNodePtr from openset
       std::iter_swap(openSet.begin()+current_idx, openSet.end()-1);
       openSet.pop_back();
 
-      // add current to closedset
-      closedSet.push_back(current);
+      // Add currentNodePtr to closedset
+      closedSet.push_back(currentNodePtr);
 
-      // for each neighbor in neighbor_nodes(current)
-      for(size_t i=0; i<current->m_childPtr.size(); i++)
+      // For each child of currentNodePtr, do
+      for(size_t i=0; i<currentNodePtr->m_childsNodePtrs.size(); i++)
       {
-        // if neighbor in closedset, continue
+        // If child is in closedSet, continue
         {
           bool found = false;
           for(size_t j=0; j<closedSet.size(); j++)
-            if(closedSet[j] == current->m_childPtr[i]) { found = true; break; }
+            if(closedSet[j]->isSameNode(currentNodePtr->m_childsNodePtrs[i])) { found = true; break; }
           if(found) continue;
         }
 
-        //tentative_g_score := g_score[current] + dist_between(current,neighbor)
-        Real tentative_g_score = g_score[current] + current->getDistToChild(i);
+        // Update tentative_g_score
+        RealT tentative_g_score = g_score[currentNodePtr] + currentNodePtr->getDistToChild(i);
 
-        // if neighbor not in openset or tentative_g_score < g_score[neighbor]
         {
+          // if (child is not in openSet),
           bool isChildInOpenSet = false;
           for(size_t j=0; j<openSet.size(); j++)
-            if(current->m_childPtr[i] == openSet[j]) { isChildInOpenSet = true; break; }
+            if(openSet[j]->isSameNode(currentNodePtr->m_childsNodePtrs[i])) { isChildInOpenSet = true; break; }
+          // Add child to openSet
+          if(not isChildInOpenSet) openSet.push_back(currentNodePtr->m_childsNodePtrs[i]);
+          // else if (tentative_g_score >= g_score[current->m_childsNodePtrs[i]] ),
+          else if( tentative_g_score >= g_score[currentNodePtr->m_childsNodePtrs[i]] )
+            continue; // This is not a better path
 
-          if( not isChildInOpenSet or tentative_g_score < g_score[current->m_childPtr[i]] )
-          {
-            current->m_childPtr[i]->compute();
-            g_score[current->m_childPtr[i]] = tentative_g_score;
-            f_score[current->m_childPtr[i]] = tentative_g_score + current->m_childPtr[i]->getHeuristicCostToGoal(goalNodePtr);
-            if(not isChildInOpenSet) openSet.push_back(current->m_childPtr[i]);
-          }
+          // Compute the successors and heuristic cost to goal of this child node
+          currentNodePtr->m_childsNodePtrs[i]->compute();
+
+          // Update g_score and f_score of this child node
+          g_score[currentNodePtr->m_childsNodePtrs[i]] = tentative_g_score;
+          f_score[currentNodePtr->m_childsNodePtrs[i]] = tentative_g_score + currentNodePtr->m_childsNodePtrs[i]->getHeuristicCostToGoal(goalNodePtr);
         }
       }
-    }
+    }; // while()
     CSolution<CNodeT> F(CSolution<CNodeT>::FAILURE);
     return F;
   }
@@ -371,7 +389,7 @@ namespace rasoul
     common::timestamp_t t0, t1;
     cerr << "A-star search started...\n";
     t0 = common::get_timestamp();
-    CSolution<AstarNode> S = A_Star_Search(&initNode, &initNode, pds);
+    CSolution<AstarNode> S = A_Star_Search<AstarNode, Real>(&initNode, &initNode, pds);
     t1 = common::get_timestamp();
     double dt = (double) (t1 - t0) / 1000000.0L;
     cerr << "A-star search finished in " << dt << " seconds\n";
