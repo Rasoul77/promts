@@ -15,9 +15,15 @@ find_package(catkin REQUIRED COMPONENTS
 find_package(Eigen REQUIRED)
 include_directories(${Eigen_INCLUDE_DIRS})
 
-find_package(Bullet REQUIRED)
-include_directories(${BULLET_INCLUDE_DIRS})
-link_directories(${BULLET_LIBRARY_DIRS})
+SET(PROMTS_USE_BULLET true)
+
+# Bullet, if required
+IF(PROMTS_USE_BULLET)
+    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DPROMTS_USE_BULLET")
+    find_package(Bullet REQUIRED)
+    include_directories(${BULLET_INCLUDE_DIRS})
+    link_directories(${BULLET_LIBRARY_DIRS})
+ENDIF(PROMTS_USE_BULLET)
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -132,14 +138,26 @@ include_directories(
 # )
 
 add_executable(DemoPROMTSAstar demo/DemoPROMTSAstar.cpp demo/DemoHelper.cpp)
-target_link_libraries(DemoPROMTSAstar
-  ${catkin_LIBRARIES} BulletDynamics  BulletCollision LinearMath
-)
+IF(PROMTS_USE_BULLET)
+    target_link_libraries(DemoPROMTSAstar
+      ${catkin_LIBRARIES} BulletDynamics  BulletCollision LinearMath
+    )
+ELSE(PROMTS_USE_BULLET)
+    target_link_libraries(DemoPROMTSAstar
+      ${catkin_LIBRARIES}
+    )
+ENDIF(PROMTS_USE_BULLET)
 
 add_executable(DemoPROMTSDLS demo/DemoPROMTSDLS.cpp demo/DemoHelper.cpp)
-target_link_libraries(DemoPROMTSDLS
-  ${catkin_LIBRARIES} BulletDynamics  BulletCollision LinearMath
-)
+IF(PROMTS_USE_BULLET)
+    target_link_libraries(DemoPROMTSDLS
+      ${catkin_LIBRARIES} BulletDynamics  BulletCollision LinearMath
+    )
+ELSE(PROMTS_USE_BULLET)
+    target_link_libraries(DemoPROMTSDLS
+      ${catkin_LIBRARIES}
+    )
+ENDIF(PROMTS_USE_BULLET)
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries

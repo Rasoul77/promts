@@ -54,8 +54,10 @@
 #include "rasoul_geometry_pkg/GeometryVolume.hpp"
 #include "rasoul_geometry_pkg/GeometryCentroid.hpp"
 
+#ifdef PROMTS_USE_BULLET
 #include <LinearMath/btConvexHullComputer.h>
 #include <LinearMath/btTransform.h>
+#endif
 
 #include <Eigen/Eigen>
 
@@ -101,6 +103,7 @@ namespace rasoul{
         //
         ////////////////////////////////////////////////////////////////////////
 
+#ifdef PROMTS_USE_BULLET
         ////////////////////////////////////////////////////////////////////////
         // Compute 3D convex hull - BULLET Implementation
         if(method_type == METHOD_BULLET)
@@ -135,6 +138,7 @@ namespace rasoul{
         }
         //
         ////////////////////////////////////////////////////////////////////////
+#endif
 
         ////////////////////////////////////////////////////////////////////////
         // Compute 3D convex hull - BRUTE FORCE
@@ -227,6 +231,7 @@ namespace rasoul{
         //
         ////////////////////////////////////////////////////////////////////////
 
+#ifdef PROMTS_USE_BULLET
         ////////////////////////////////////////////////////////////////////////
         // Fill in F
         if(method_type == METHOD_BULLET)
@@ -274,6 +279,7 @@ namespace rasoul{
         }
         //
         ////////////////////////////////////////////////////////////////////////
+#endif
 
         ////////////////////////////////////////////////////////////////////////
         // Fill in E
@@ -484,7 +490,9 @@ namespace rasoul{
       T volume;                         // Volume of the polyhedron
     private:
       T epsil;
+#ifdef PROMTS_USE_BULLET
       btConvexHullComputer convexUtil;
+#endif
       std::vector< Matrix<T,3,1> > V_; // Original vertices of the polyhedron
       std::vector< Face<T> > F_;       // Original faces of the polyhedron
       std::vector< Edge<T> > E_;       // Original edges of the polyhedron
