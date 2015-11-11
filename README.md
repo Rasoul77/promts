@@ -18,7 +18,7 @@ two selected search methods: A-star and Depth-Limited search. The performance of
 on data sets generated in simulation and from real-world scenarios. The results show overall improvement of the 
 estimated poses and suggest that depth-limited search presents the best overall performance.
 
-## A Demo Video
+### Video
 [![PROMTS Demo Video](http://img.youtube.com/vi/zkIPY1mHGxk/0.jpg)](https://www.youtube.com/watch?v=zkIPY1mHGxk)
 
 ## Implementation
