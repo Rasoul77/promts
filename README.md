@@ -19,7 +19,7 @@ on data sets generated in simulation and from real-world scenarios. The results 
 estimated poses and suggest that depth-limited search presents the best overall performance.
 
 ### Video
-[![PROMTS Demo Video](http://img.youtube.com/vi/zkIPY1mHGxk/0.jpg)](https://www.youtube.com/watch?v=zkIPY1mHGxk)
+[![PROMTS Demo Video](http://img.youtube.com/vi/Rktomj6-ltQ/0.jpg)](https://www.youtube.com/watch?v=Rktomj6-ltQ)
 
 ## Implementation
 The software is implemented in C/C++ and under ROS (Robot Operation System) and tested with ROS Hydro.
