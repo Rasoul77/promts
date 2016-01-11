@@ -18,6 +18,9 @@ two selected search methods: A-star and Depth-Limited search. The performance of
 on data sets generated in simulation and from real-world scenarios. The results show overall improvement of the 
 estimated poses and suggest that depth-limited search presents the best overall performance.
 
+### Video
+[![PROMTS Demo Video](http://img.youtube.com/vi/Rktomj6-ltQ/0.jpg)](https://www.youtube.com/watch?v=Rktomj6-ltQ)
+
 ## Implementation
 The software is implemented in C/C++ and under ROS (Robot Operation System) and tested with ROS Hydro.
 The software uses the fast implementation of 3D convex hull estimation algorithm in Bullet Physics engine 
