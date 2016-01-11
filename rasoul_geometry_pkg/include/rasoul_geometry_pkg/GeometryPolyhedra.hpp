@@ -127,6 +127,7 @@ namespace rasoul{
             const btConvexHullComputer::Edge*  firstEdge = &convexUtil.edges[face];
             const btConvexHullComputer::Edge*  edge = firstEdge;
             VecPoints tp;
+            tp.p.resize(3);
             for(int i=0; i<3; i++)
             {
               int src = edge->getSourceVertex();
@@ -253,8 +254,6 @@ namespace rasoul{
               edge = edge->getNextEdgeOfFace();
 
             }while (edge!=firstEdge);
-
-            getchar();
 
             if(F[f].Idx.size() < 3) return(false);
 
