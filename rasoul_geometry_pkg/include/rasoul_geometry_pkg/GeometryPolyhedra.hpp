@@ -75,14 +75,14 @@ namespace rasoul{
         std::vector< Matrix<T,3,1> > p;
       };
 
-      enum method_t {METHOD_BRUTE_FORDE=0, METHOD_BULLET};
+      enum method_t {METHOD_BRUTE_FORCE=0, METHOD_BULLET};
       //======================================================================
       // Constructor
       //======================================================================
       CGeometryPolyhedra() : epsil(1e-3) {}
 
       bool
-      Compute(const std::vector< Matrix<T,3,1> >& egV, method_t method_type = METHOD_BRUTE_FORDE, bool flag_check_euler = true)
+      Compute(const std::vector< Matrix<T,3,1> >& egV, method_t method_type = METHOD_BRUTE_FORCE, bool flag_check_euler = true)
       {
         ////////////////////////////////////////////////////////////////////////
         // clear all data
@@ -143,7 +143,7 @@ namespace rasoul{
 
         ////////////////////////////////////////////////////////////////////////
         // Compute 3D convex hull - BRUTE FORCE
-        if(method_type == METHOD_BRUTE_FORDE)
+        if(method_type == METHOD_BRUTE_FORCE)
         {
           std::vector<bool> cnr(nV);
           std::vector<unsigned int> pIdx;
