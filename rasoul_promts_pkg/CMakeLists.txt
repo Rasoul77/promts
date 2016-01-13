@@ -15,7 +15,7 @@ find_package(catkin REQUIRED COMPONENTS
 find_package(Eigen REQUIRED)
 include_directories(${Eigen_INCLUDE_DIRS})
 
-SET(PROMTS_USE_BULLET false)
+SET(PROMTS_USE_BULLET true)
 
 # Bullet, if required
 IF(PROMTS_USE_BULLET)
