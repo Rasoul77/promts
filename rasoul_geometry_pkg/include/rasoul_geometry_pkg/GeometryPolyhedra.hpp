@@ -116,31 +116,7 @@ namespace rasoul{
         //
         ////////////////////////////////////////////////////////////////////////
 
-        ////////////////////////////////////////////////////////////////////////
-        // Remove edges split a polygon face into triangles - BULLET
-        if(method_type == METHOD_BULLET)
-        {
-          std::vector<VecPoints> f3p;
-          for(int f=0;f<convexUtil.faces.size();f++)
-          {
-            int face = convexUtil.faces[f];
-            const btConvexHullComputer::Edge*  firstEdge = &convexUtil.edges[face];
-            const btConvexHullComputer::Edge*  edge = firstEdge;
-            VecPoints tp;
-            tp.p.resize(3);
-            for(int i=0; i<3; i++)
-            {
-              int src = edge->getSourceVertex();
-              tp.p[i] = Matrix<T,3,1>(convexUtil.vertices[src].x(), convexUtil.vertices[src].y(), convexUtil.vertices[src].z());
-              edge = edge->getNextEdgeOfFace();
-            }
-            f3p.push_back(tp);
-          }
-        }
-        //
-        ////////////////////////////////////////////////////////////////////////
 #endif
-
         ////////////////////////////////////////////////////////////////////////
         // Compute 3D convex hull - BRUTE FORCE
         if(method_type == METHOD_BRUTE_FORCE)

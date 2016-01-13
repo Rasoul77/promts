@@ -15,10 +15,11 @@ find_package(catkin REQUIRED COMPONENTS
 find_package(Eigen REQUIRED)
 include_directories(${Eigen_INCLUDE_DIRS})
 
-SET(PROMTS_USE_BULLET true)
+SET(PROMTS_USE_BULLET false)
 
 # Bullet, if required
 IF(PROMTS_USE_BULLET)
+    add_definitions(-DPROMTS_USE_BULLET)
     SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DPROMTS_USE_BULLET")
     find_package(Bullet REQUIRED)
     include_directories(${BULLET_INCLUDE_DIRS})
