@@ -146,7 +146,11 @@ ReadPolyhedraConfigFile
       else if(line.compare("# Object Alpha") == 0)
       {
         std::getline (readfile, line);
-        shape.Compute(Vi);
+        #ifdef PROMTS_USE_BULLET
+          shape.Compute(Vi,rasoul::geometry::CGeometryPolyhedra<Real>::METHOD_BULLET);
+        #else
+          shape.Compute(Vi,rasoul::geometry::CGeometryPolyhedra<Real>::METHOD_BRUTE_FORCE);
+        #endif
         shapes.push_back(shape);
       }
       else if(line.compare("# Captured <Points-ObjectID>") == 0)

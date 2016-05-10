@@ -75,14 +75,14 @@ namespace rasoul{
         std::vector< Matrix<T,3,1> > p;
       };
 
-      enum method_t {METHOD_BRUTE_FORDE=0, METHOD_BULLET};
+      enum method_t {METHOD_BRUTE_FORCE=0, METHOD_BULLET};
       //======================================================================
       // Constructor
       //======================================================================
       CGeometryPolyhedra() : epsil(1e-3) {}
 
       bool
-      Compute(const std::vector< Matrix<T,3,1> >& egV, method_t method_type = METHOD_BRUTE_FORDE, bool flag_check_euler = true)
+      Compute(const std::vector< Matrix<T,3,1> >& egV, method_t method_type = METHOD_BRUTE_FORCE, bool flag_check_euler = true)
       {
         ////////////////////////////////////////////////////////////////////////
         // clear all data
@@ -110,40 +110,60 @@ namespace rasoul{
         {
           btAlignedObjectArray<btVector3> btV;
           btV.resize(egV.size());
-          for(size_t i=0; i<egV.size(); i++) btV[i] = btVector3(egV[i].x(), egV[i].y(), egV[i].z());
+          for(size_t i=0; i<egV.size(); i++)
+            btV[i] = btVector3(egV[i].x(), egV[i].y(), egV[i].z());
           convexUtil.compute(&btV[0].getX(), sizeof(btVector3), btV.size(), 0, 0);
+          for(int i=0; i<convexUtil.vertices.size(); i++)
+            V[i] = Matrix<T,3,1>(convexUtil.vertices[i].getX(),convexUtil.vertices[i].getY(),convexUtil.vertices[i].getZ());
         }
         //
         ////////////////////////////////////////////////////////////////////////
 
         ////////////////////////////////////////////////////////////////////////
-        // Remove edges split a polygon face into triangles - BULLET
+        // Fill in F
         if(method_type == METHOD_BULLET)
         {
-          std::vector<VecPoints> f3p;
+          F.resize(convexUtil.faces.size());
           for(int f=0;f<convexUtil.faces.size();f++)
           {
             int face = convexUtil.faces[f];
             const btConvexHullComputer::Edge*  firstEdge = &convexUtil.edges[face];
             const btConvexHullComputer::Edge*  edge = firstEdge;
-            VecPoints tp;
-            tp.p.resize(3);
-            for(int i=0; i<3; i++)
-            {
-              int src = edge->getSourceVertex();
-              tp.p[i] = Matrix<T,3,1>(convexUtil.vertices[src].x(), convexUtil.vertices[src].y(), convexUtil.vertices[src].z());
+
+            do{
+              int src  = edge->getSourceVertex();
+              F[f].Idx.push_back(src);
               edge = edge->getNextEdgeOfFace();
+
+            }while (edge!=firstEdge);
+
+            if(F[f].Idx.size() < 3) return(false);
+
+            std::vector< Matrix<T,3,1> > vf(F[f].Idx.size());
+            for(size_t k=0; k<F[f].Idx.size(); k++) vf[k] = V[ F[f].Idx[k] ];
+            F[f].cm = PolygonCentroid3D(vf);
+
+            Matrix<T,3,1> e1 = V[F[f].Idx[1]] - V[F[f].Idx[0]];
+            Matrix<T,3,1> e2 = V[F[f].Idx[2]] - V[F[f].Idx[0]];
+            Matrix<T,3,1> nf = e2.cross(e1);
+            T magf = nf.stableNorm();
+            for(size_t i=3; i<F[f].Idx.size(); i++)
+            {
+              e2 = V[F[f].Idx[i]] - V[F[f].Idx[0]];
+              Matrix<T,3,1> n = e2.cross(e1);
+              T mag = n.stableNorm();
+              if(magf<mag){ magf = mag; nf = n;}
             }
-            f3p.push_back(tp);
+            F[f].normal = nf.normalized();
+            F[f].endp = F[f].cm + F[f].normal;
           }
         }
         //
         ////////////////////////////////////////////////////////////////////////
 #endif
-
         ////////////////////////////////////////////////////////////////////////
         // Compute 3D convex hull - BRUTE FORCE
-        if(method_type == METHOD_BRUTE_FORDE)
+        if(method_type == METHOD_BRUTE_FORCE)
         {
           std::vector<bool> cnr(nV);
           std::vector<unsigned int> pIdx;
@@ -231,54 +251,6 @@ namespace rasoul{
         }
         //
         ////////////////////////////////////////////////////////////////////////
-
-#ifdef PROMTS_USE_BULLET
-        ////////////////////////////////////////////////////////////////////////
-        // Fill in F
-        if(method_type == METHOD_BULLET)
-        {
-          F.resize(convexUtil.faces.size());
-          for(int f=0;f<convexUtil.faces.size();f++)
-          {
-            int face = convexUtil.faces[f];
-            const btConvexHullComputer::Edge*  firstEdge = &convexUtil.edges[face];
-            const btConvexHullComputer::Edge*  edge = firstEdge;
-
-            do{
-              int src  = edge->getSourceVertex();
-              int targ = edge->getTargetVertex();
-
-              //std::cerr << f << ": src - target > " << src << " - " << targ << std::endl;
-
-              F[f].Idx.push_back(src);
-              edge = edge->getNextEdgeOfFace();
-
-            }while (edge!=firstEdge);
-
-            if(F[f].Idx.size() < 3) return(false);
-
-            std::vector< Matrix<T,3,1> > vf(F[f].Idx.size());
-            for(size_t k=0; k<F[f].Idx.size(); k++) vf[k] = V[ F[f].Idx[k] ];
-            F[f].cm = PolygonCentroid3D(vf);
-
-            Matrix<T,3,1> e1 = V[F[f].Idx[1]] - V[F[f].Idx[0]];
-            Matrix<T,3,1> e2 = V[F[f].Idx[2]] - V[F[f].Idx[0]];
-            Matrix<T,3,1> nf = e2.cross(e1);
-            T magf = nf.stableNorm();
-            for(size_t i=3; i<F[f].Idx.size(); i++)
-            {
-              e2 = V[F[f].Idx[i]] - V[F[f].Idx[0]];
-              Matrix<T,3,1> n = e2.cross(e1);
-              T mag = n.stableNorm();
-              if(magf<mag){ magf = mag; nf = n;}
-            }
-            F[f].normal = nf.normalized();
-            F[f].endp = F[f].cm + F[f].normal;
-          }
-        }
-        //
-        ////////////////////////////////////////////////////////////////////////
-#endif
 
         ////////////////////////////////////////////////////////////////////////
         // Fill in E

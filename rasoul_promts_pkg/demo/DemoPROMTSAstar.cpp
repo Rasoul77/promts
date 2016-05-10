@@ -119,7 +119,6 @@ main(int argc, char** argv)
   }
   COpenGLRosCom glNode;
   glNode.CreateNode(gltopic);
-  std::cerr << "Here!\n";
   //
   //////////////////////////////////////////////////////////////////////////////
 
