@@ -163,6 +163,7 @@ target_link_libraries(Visualizer
   ${OpenCV_LIBS}
 )
 add_dependencies(Visualizer ${catkin_EXPORTED_TARGETS})
+add_dependencies(Visualizer ${${PROJECT_NAME}_EXPORTED_TARGETS})
 
 ## Declare a cpp executable
 #add_executable(test_visualizer apps/test_visualizer)
